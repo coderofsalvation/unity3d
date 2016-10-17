@@ -3,7 +3,8 @@
 # latest Linux releases can be found here:
 # http://forum.unity3d.com/threads/unity-on-linux-release-notes-and-known-issues.350256/#post-2429209
 SHELL := /bin/bash
-TAG := 5.3.3f1+20160223
+#TAG := 5.3.3f1+20160223
+TAG := 5.1.0f3+2015082501
 PKG := unity-editor-$(TAG)_amd64.deb
 URL := http://download.unity3d.com/download_unity/linux/$(PKG)
 
@@ -21,9 +22,9 @@ download:
 		(curl -O $(URL) && echo "Downloaded: $(PKG)")
 
 build:
-	docker build -t unity3d:$(DOCKER_TAG) \
-		--build-arg PACKAGE=$(PKG) \
-		--build-arg VIDEO_GID=$(VIDEO_GID) \
+	echo --build-arg PACKAGE=$(PKG)
+	echo --build-arg VIDEO_GID=$(VIDEO_GID) 
+	docker build -t unity3d:$(DOCKER_TAG) .
 		.
 	# delete the license file, since the authorised machine's signature
 	#+ changed (if this is a re-build).
@@ -33,8 +34,10 @@ run:
 	@mkdir -p gamedevhome/.local/share/unity3d/Unity
 	@mkdir -p gamedevhome/.cache/unity3d
 	@mkdir -p gamedevhome/.config/unity3d/Preferences
+	# make sure to install 'apt-get install paprefs' locally
 	docker run --rm -it --privileged --net host \
 		--device=/dev/dri:/dev/dri \
+		-e "PULSE_SERVER=tcp:peach.fritz.box:4713" \
 		-v /tmp/.X11-unix:/tmp/.X11-unix \
 		-v $(PWD)/gamedevhome:/home/gamedev \
 		--name unity3d \

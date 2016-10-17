@@ -6,8 +6,8 @@ FROM ubuntu:14.04
 
 MAINTAINER thshaw
 
-ARG PACKAGE
-ARG VIDEO_GID
+ENV PACKAGE unity-editor-5.1.0f3+2015082501_amd64.deb
+ENV VIDEO_GID 44
 
 RUN apt-get update
 
@@ -41,8 +41,9 @@ ADD  https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb /
 
 # Install Chromium
 RUN mkdir -p /usr/share/icons/hicolor && \
-	apt-get update && apt-get install -y \
-	ca-certificates \
+	apt-get update  && \
+  apt-get install -y \
+	ca-certificates software-properties-common \
   	fonts-liberation \
 	gconf-service \
 	hicolor-icon-theme \
@@ -71,6 +72,10 @@ RUN mkdir -p /usr/share/icons/hicolor && \
 	--no-install-recommends && \
 	dpkg -i '/src/google-chrome-stable_current_amd64.deb' && \
 	rm -rf /var/lib/apt/lists/*
+RUN add-apt-repository -y ppa:mc3man/trusty-media
+RUN apt-get update
+RUN apt-get install -y ffmpeg
+
 
 USER gamedev
 WORKDIR /home/gamedev
