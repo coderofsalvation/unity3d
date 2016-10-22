@@ -3,8 +3,8 @@
 # latest Linux releases can be found here:
 # http://forum.unity3d.com/threads/unity-on-linux-release-notes-and-known-issues.350256/#post-2429209
 SHELL := /bin/bash
-#TAG := 5.3.3f1+20160223
-TAG := 5.1.0f3+2015082501
+TAG := 5.3.3f1+20160223
+#TAG := 5.1.0f3+2015082501
 PKG := unity-editor-$(TAG)_amd64.deb
 URL := http://download.unity3d.com/download_unity/linux/$(PKG)
 

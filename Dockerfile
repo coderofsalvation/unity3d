@@ -6,7 +6,7 @@ FROM ubuntu:14.04
 
 MAINTAINER thshaw
 
-ENV PACKAGE unity-editor-5.1.0f3+2015082501_amd64.deb
+ENV PACKAGE unity-editor-5.3.3f1+20160223_amd64.deb
 ENV VIDEO_GID 44
 
 RUN apt-get update
@@ -44,6 +44,7 @@ RUN mkdir -p /usr/share/icons/hicolor && \
 	apt-get update  && \
   apt-get install -y \
 	ca-certificates software-properties-common \
+  openjdk-7-jdk \
   	fonts-liberation \
 	gconf-service \
 	hicolor-icon-theme \
@@ -69,9 +70,14 @@ RUN mkdir -p /usr/share/icons/hicolor && \
   	monodevelop \
 	wget \
 	xdg-utils \
+  lib32z1 \
 	--no-install-recommends && \
 	dpkg -i '/src/google-chrome-stable_current_amd64.deb' && \
-	rm -rf /var/lib/apt/lists/*
+	rm -rf /var/lib/apt/lists/* && \
+  cd /opt && wget http://dl.google.com/android/android-sdk_r24.2-linux.tgz && \
+  tar -xvf android-sdk_r24.2-linux.tgz && \
+  cd android-sdk-linux/tools && \
+  echo y | ./android update sdk --no-ui --filter platform-tool
 RUN add-apt-repository -y ppa:mc3man/trusty-media
 RUN apt-get update
 RUN apt-get install -y ffmpeg
